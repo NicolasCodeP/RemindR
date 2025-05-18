@@ -61,6 +61,18 @@ path = "src/main.rs"
 name = "simple_test"
 path = "src/bin/simple_test.rs"
 
+[[bin]]
+name = "save_command"
+path = "src/bin/save_command.rs"
+
+[[bin]]
+name = "shell_integration"
+path = "src/bin/shell_integration.rs"
+
+[[bin]]
+name = "integration_manager"
+path = "src/bin/integration_manager.rs"
+
 [lib]
 name = "remindr"
 path = "src/lib.rs" 

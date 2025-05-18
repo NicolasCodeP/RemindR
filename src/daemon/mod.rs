@@ -72,14 +72,22 @@ pub fn start_daemon() -> Result<()> {
                 error!("Failed to update daemon status: {}", e);
             }
             
-            // Create a runtime for async operations
-            let rt = tokio::runtime::Runtime::new()
+            // Create a multi-threaded runtime for async operations
+            let rt = tokio::runtime::Builder::new_multi_thread()
+                .enable_all()
+                .build()
                 .context("Failed to create Tokio runtime")?;
             
-            // Run the command watcher in the runtime
+            // Run the command watcher in the runtime, blocking indefinitely
             rt.block_on(async {
+                info!("Starting command watcher in runtime");
                 if let Err(e) = start_command_watcher().await {
                     error!("Command watcher error: {}", e);
+                }
+                
+                // Keep the daemon running indefinitely
+                loop {
+                    tokio::time::sleep(std::time::Duration::from_secs(3600)).await;
                 }
             });
             
